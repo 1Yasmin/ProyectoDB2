@@ -1,7 +1,7 @@
 from sqlListener import sqlListener
 from databaseManager import databaseManager
 
-	
+dbManager = databaseManager()
 
 class sqlProcessingListener(sqlListener):
 	def __init__(self):
@@ -12,10 +12,7 @@ class sqlProcessingListener(sqlListener):
 		print 'Parsing'
 		
 	def exitUse_database_stmt(self, ctx):
-                dbManager = databaseManager(ctx.database_name().getText());	
-                
-                print 'identificada'
-                
+                dbManager.useDatabase(ctx.database_name().getText());	               
 
 	def exitCreate_database_stmt(self, ctx):
 		print 'Creando DB'

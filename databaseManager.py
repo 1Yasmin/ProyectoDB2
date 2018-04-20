@@ -1,8 +1,8 @@
-
+import json
 import os
 class databaseManager:
 
-	def __init__(self, db):
+	def __init__(self):
 		# Verificar que exista la carpeta 'databases' que es donde se crearan las bases de datos
 		pass
 		# Si no existe, crearla
@@ -11,9 +11,16 @@ class databaseManager:
 		
 		# Si no existe, crearlo
 
-		self.currentDatabase = db
-		print self.currentDatabase
 		
+		#with open('data.json') as json_file:  
+                #data = json.load(json_file)
+                #data['bases'].append({"data": nuevoDato})
+
+        def useDatabase(self, db):
+                currentDatabase = db
+                print 'estas usando la base d datos ' + db
+                
+				
 	def createDatabase(self, name):
 		# Crear carpeta con el nombre name
 		#os.makedirs("C:\Users\Samantha Duarte\Documents\5TO SEMESTRE\Proyecto2BD\proyecto2-dbms\sql-python2")

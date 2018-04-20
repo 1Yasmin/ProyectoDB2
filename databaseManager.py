@@ -2,7 +2,7 @@
 import os
 class databaseManager:
 
-	def __init__(self):
+	def __init__(self, db):
 		# Verificar que exista la carpeta 'databases' que es donde se crearan las bases de datos
 		pass
 		# Si no existe, crearla
@@ -11,7 +11,8 @@ class databaseManager:
 		
 		# Si no existe, crearlo
 
-		# self.currentDatabase = null
+		self.currentDatabase = db
+		print self.currentDatabase
 		
 	def createDatabase(self, name):
 		# Crear carpeta con el nombre name

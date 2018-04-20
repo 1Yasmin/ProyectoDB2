@@ -4,7 +4,9 @@ import sys
 from antlr4 import *
 from sqlLexer import sqlLexer
 from sqlParser import sqlParser
-from sqlListener import sqlListener
+from sqlProcessingListener import sqlProcessingListener
+#from PyQt4 import QtCore, QtGui
+import pdb
 
 from antlr4.error.ErrorListener import ErrorListener
 
@@ -19,14 +21,10 @@ class ParserExceptionErrorListener(ErrorListener):
         raise ParserException("line " + str(line) + ":" + str(column) + " " + msg)
 
 
-class sqlProcessingListener(sqlListener):
-	def enterParse(self,ctx):
-		print 'Parsing'
-	def exitCreate_database_stmt(self, ctx):
-		print 'Creando DB'
-		#os.makedirs("C:\Users\Samantha Duarte\Documents\5TO SEMESTRE\Proyecto2BD\proyecto2-dbms\sql-python2")
-		os.mkdir("cualquier")
-	
+
+
+#dbManager = DatabaseManager();		
+
 def parse(text):
     lexer = sqlLexer(InputStream(text))
     lexer.removeErrorListeners()
@@ -43,8 +41,9 @@ def parse(text):
 
     # Luego de procesar, visitar el arbol construido con el custom listener
     # definido arriba
+    sqlPL = sqlProcessingListener()
     walker = ParseTreeWalker()
-    walker.walk(sqlProcessingListener(), tree)	
+    walker.walk(sqlPL, tree)	
 
 
 		
@@ -54,7 +53,9 @@ Uso: python cli.py
 
 Las construcciones validas para esta gramatica son todas aquellas 
 '''
+
 def main(argv):
+
     while True:
         try:
             text = raw_input("> ")

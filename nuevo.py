@@ -1,9 +1,16 @@
 import json
-with open('data.json') as json_file:  
-  data = json.load(json_file)
-nuevoDato = "La nueva tabla"
-data['bases'].append({"data": nuevoDato})
-data['bases'].append({"data": "Lesly"})
-data['bases'].append({"data": "El club del arbol"})
-print data
+n = 0
+
+while n != 3:
+	with open('data.json', 'r') as file:
+		data = json.load(file)
+		print data
+	print('Data:')
+	nuevoDato = raw_input()
+	print nuevoDato
+	data['bases'].append({"data": nuevoDato})
+	with open('data.json', 'w') as file:
+		json.dump(data, file)
+	n = n+1
+
 

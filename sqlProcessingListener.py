@@ -6,10 +6,11 @@ dbManager = databaseManager()
 class sqlProcessingListener(sqlListener):
 	def __init__(self):
 		#self.db = db
-                print 'holi'
+            pass
 
 	def enterParse(self,ctx):
-		print 'Parsing'
+		pass
+		#print 'Parsing'
 		
 	def exitUse_database_stmt(self, ctx):
                 dbManager.useDatabase(ctx.database_name().getText());	               
@@ -21,5 +22,7 @@ class sqlProcessingListener(sqlListener):
 		dbManager.createDatabase(ctx.database_name().getText());
 		
 		#pdb.set_trace()
-		
+	
+	def exitShow_databases_stmt(self, ctx):
+		dbManager.showDatabase();
 		

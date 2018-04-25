@@ -27,13 +27,12 @@ class databaseManager:
 		# Verificar que databaseName sea una base de datos existent
 				os.chdir("C:\\databases")
 				list = os.listdir(".")
-				valid = True
+				valid = False
 				for elemento in list:
 					if elemento == db:
 						print 'estas usando la base d datos ' + db
 						os.chdir(db)
-					else:
-						valid = False
+						valid = True
 				if valid == False:
 					print 'La base de datos no existe'
                 

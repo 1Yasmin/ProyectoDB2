@@ -1,7 +1,11 @@
 import json
 import os
 import os.path
+import funciones
+
 class databaseManager:
+
+	baseActual = ""
 
 	def __init__(self):
 		# Verificar que exista la carpeta 'databases' que es donde se crearan las bases de datos
@@ -24,38 +28,37 @@ class databaseManager:
 		# Si no existe, crearlo
 
         def useDatabase(self, db):
+				global baseActual
 		# Verificar que databaseName sea una base de datos existent
 				os.chdir("C:\\databases")
-				list = os.listdir(".")
-				valid = False
-				for elemento in list:
-					if elemento == db:
-						print 'estas usando la base d datos ' + db
-						os.chdir(db)
-						valid = True
-				if valid == False:
+				if funciones.validarExistencia(".", db):
+					print 'estas usando la base d datos ' + db
+					baseActual = db
+					os.chdir(db)
+				else:
 					print 'La base de datos no existe'
                 
 				
 	def createDatabase(self, name):
+		os.chdir("C:\\databases")
 		#validar que ninguna carpeta tenga ese nombre
-		list = os.listdir(".")
-		valid = True
-		for elemento in list:
-			if elemento == name:
-				print 'La base de datos ya existe, cambie el nombre'
-			else:
-				valid = False
-		if valid == False:
-			# Crear carpeta con el nombre name
+		if funciones.validarExistencia(".", name):
+			print "Ya existe la base de datos, cambie el nombre"
+		else:
+		# Crear carpeta con el nombre name
 			os.mkdir(name)
 			# Modificar archivo de metadata para agregar un nuevo database
 			with open('metadata.json', 'r') as file:
 				data = json.load(file)
 				print data
-			data['bases'].append({"data": name})
+			data['bases'].append({"data": name, 'tables': 0})
 			with open('metadata.json', 'w') as file:
 				json.dump(data, file)
+			#Crear archivo de metadata de las tablas
+			metadataTabla = {}
+			metadataTabla['tables'] = [] 
+			with open("C:\\databases\\"+name+"\metadataTabla.json", 'w') as outfile:
+				json.dump(metadataTabla, outfile)
 
 	def showDatabase(self):
 		list = os.listdir(".")
@@ -64,12 +67,39 @@ class databaseManager:
 			if elemento != "metadata.json":
 				print elemento
 		
-	def setCurrentDatabase(self, databaseName):
-		# Verificar que databaseName sea una base de datos existent
-		pass
-		# Setear la currentDatabase a databaseName
 	def createTable(self, tableName, columnas):
-	
 		# Verificar que la tabla no exista ya en la base de datos
-		pass
-		# Crear el archivo para la tabla
+		if funciones.validarExistencia("c:\\databases\\"+baseActual, tableName):
+			print 'La tabla ya existe, cambie el nombre'
+		else:
+		# Modificar la metadata de las tablas
+			with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'r') as file:
+				data = json.load(file)
+				print data
+			data['tables'].append({'name':tableName, 'cantRegistros': 0, 'cantRestricciones': 0})
+			with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'w') as file:
+				json.dump(data, file)
+			# Modificar archivo de metadata para agregar una nueva tabla a la base de datos actual
+                        n = 0
+			with open('C:\\databases\metadata.json', 'r') as file:
+				data = json.load(file)
+				print n
+				print len(data['bases'])
+				while n < len(data['bases']):
+                                        print n
+					if data['bases'][n]['data'] == baseActual:
+						tableNum = data['bases'][n]['tables']
+						tableNum = tableNum + 1
+                                                print tableNum
+						data['bases'][n] = {"data": baseActual, "tables": tableNum}
+                                                #data['bases'].append({"data": name})
+                                                with open('C:\\databases\metadata.json', 'w') as file:
+                                                        json.dump(data, file)
+					n = n + 1 
+			# Crear el archivo para la tabla
+			nombre = "Tabla"+tableName
+			nombre = {}
+			nombre['columnas'] = [] 
+			with open("c:\\databases\\"+baseActual+'\\'+"Tabla"+tableName+'.json', 'w') as outfile:
+				json.dump(nombre, outfile)
+		

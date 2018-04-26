@@ -27,5 +27,5 @@ class sqlProcessingListener(sqlListener):
 		dbManager.showDatabase();
 		
 	def exitCreate_table_stmt(self, ctx):
-		dbManager.createTable(ctx.table_name().getText(), ctx.colum_def().getText());
+		dbManager.createTable(ctx.table_name().getText(), ctx.column_def(None));
 		

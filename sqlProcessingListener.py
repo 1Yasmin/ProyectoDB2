@@ -26,3 +26,6 @@ class sqlProcessingListener(sqlListener):
 	def exitShow_databases_stmt(self, ctx):
 		dbManager.showDatabase();
 		
+	def exitCreate_table_stmt(self, ctx):
+		dbManager.createTable(ctx.table_name().getText(), ctx.colum_def().getText());
+		

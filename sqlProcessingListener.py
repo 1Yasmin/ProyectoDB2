@@ -28,6 +28,7 @@ class sqlProcessingListener(sqlListener):
 		
 	def exitCreate_table_stmt(self, ctx):
 		dbManager.createTable(ctx.table_name().getText(), ctx.column_def(None));
+		
 	
 	#def exitColumn_constraint(self, ctx):
 	#dbManager.columnConstraint(ctx.signed_number().getText(), ctx.literal_value().getText(), ctx.expr().getText());
@@ -40,3 +41,9 @@ class sqlProcessingListener(sqlListener):
 		
 	def exitDrop_database_stmt(self, ctx):
 		dbManager.dropDatabase(ctx.database_name().getText());
+		
+	def exitAlter_table_stmt(self, ctx):
+		dbManager.alterTable(ctx.table_name().getText(),ctx.new_table_name().getText(),ctx.column_def(),ctx.table_constraint(),ctx.column_name(), ctx.name());
+	
+	def exitAlter_database_stmt(self, ctx):
+		dbManager.alterDatabase(ctx.database_name().getText(), ctx.new_database_name().getText());

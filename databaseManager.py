@@ -14,6 +14,8 @@ class databaseManager:
 		if os.path.exists("C:\\databases") == False:
 			os.mkdir("databases")
 		os.chdir("C:\\databases")
+		
+		
 		# Verificar que exista el archivo de metadata databases/metadata.json
 		if os.path.exists("C:\\databases\metadata.json") == False:
 			print 'no existe, se creo'
@@ -23,6 +25,8 @@ class databaseManager:
 			with open('metadata.json', 'w') as outfile:
 				json.dump(metadata, outfile)
 			print metadata
+			
+			
 		else:
 			print 'Si'
 		
@@ -129,6 +133,24 @@ class databaseManager:
 		pass
 		
 	def dropDatabase(self, database_name):
-		shutil.rmtree("c:\\databases\\"+database_name)
+		os.chdir("C:\\databases")
+		if funciones.validarExistencia(".", database_name):
+			shutil.rmtree("c:\\databases\\"+database_name)
+			print "La base de datos " + database_name + " fue eliminada"
+		else:
+			print "La base de datos no existe"
+		
+	def alterTable(self, tableName, newTableName, columnDef, tableConstraint, columnName, name):
+		os.chdir("C:\\databases\\"+baseActual)
+
+		with open('C:\\databases\metadata.json', 'r') as file:
+				data = json.load(file)
 		
 		
+	def alterDatabase(self, databaseName, newDatabaseName):
+		os.chdir("C:\\")
+		print databaseName + newDatabaseName
+		os.rename(databaseName, newDatabaseName)
+		print "La base de datos " + databaseName + " fue renombrada como " + newDatabaseName
+		#else:
+		#print "La base de datos no existe"

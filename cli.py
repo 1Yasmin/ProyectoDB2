@@ -20,10 +20,7 @@ class ParserExceptionErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         raise ParserException("line " + str(line) + ":" + str(column) + " " + msg)
 
-
-
-
-#dbManager = DatabaseManager();		
+#dbManager = DatabaseManager();
 
 def parse(text):
     lexer = sqlLexer(InputStream(text))
@@ -44,9 +41,6 @@ def parse(text):
     sqlPL = sqlProcessingListener()
     walker = ParseTreeWalker()
     walker.walk(sqlPL, tree)	
-
-
-		
 
 '''
 Uso: python cli.py

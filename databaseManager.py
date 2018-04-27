@@ -2,6 +2,7 @@ import json
 import os
 import os.path
 import funciones
+import shutil
 
 class databaseManager:
 
@@ -100,6 +101,34 @@ class databaseManager:
 			nombre = "Tabla"+tableName
 			nombre = {}
 			nombre['columnas'] = [] 
+			nombre['constraints'] = [] 
+			nombre['registros'] = [] 
+			
+			list = columnas
+			for i in list:
+				nombre['columnas'].append({'name': i.column_name().getText(), 'type': i.type_name().getText()})
+				
+			
 			with open("c:\\databases\\"+baseActual+'\\'+"Tabla"+tableName+'.json', 'w') as outfile:
 				json.dump(nombre, outfile)
+		
+	def columnConstraint(self, signedNumber, literalValue, expr):
+		pass
+
+		
+	def tableConstraint(self, name, columnName, expr, foreignKey):
+		with open('data.json', 'r') as file:
+			data = json.load(file)
+		print n
+		data['constraints'].append({"tipo": "hola"})
+		with open('data.json', 'w') as file:
+			json.dump(data, file)
+
+		
+	def insertStmt(self, tableName, expr, columnName):
+		pass
+		
+	def dropDatabase(self, database_name):
+		shutil.rmtree("c:\\databases\\"+database_name)
+		
 		

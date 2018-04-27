@@ -28,4 +28,15 @@ class sqlProcessingListener(sqlListener):
 		
 	def exitCreate_table_stmt(self, ctx):
 		dbManager.createTable(ctx.table_name().getText(), ctx.column_def(None));
+	
+	#def exitColumn_constraint(self, ctx):
+	#dbManager.columnConstraint(ctx.signed_number().getText(), ctx.literal_value().getText(), ctx.expr().getText());
+
+	def exitTable_constraint(self, ctx):
+		dbManager.tableConstraint(ctx.name().getText(), ctx.column_name(), ctx.expr().getText, ctx.foreign_key_clause());
 		
+	def exitInsert_stmt(self, ctx):
+		dbManager.insertStmt(ctx.table_name().getText(), ctx.expr(), ctx.column_name());
+		
+	def exitDrop_database_stmt(self, ctx):
+		dbManager.dropDatabase(ctx.database_name().getText());

@@ -51,7 +51,7 @@ Las construcciones validas para esta gramatica son todas aquellas
 def main(argv):
 
     while True:
-        try:
+        # try:
             text = raw_input("> ")
 
             if (text == 'exit'):
@@ -60,15 +60,15 @@ def main(argv):
             parse(text);
             print "Valid"
 
-        except ParserException as e:
-            print "Got a parser exception:", e.value
+        # except ParserException as e:
+            # print "Got a parser exception:", e.value
 
-        except EOFError as e:
-            print "Bye"
-            sys.exit()
+        # except EOFError as e:
+            # print "Bye"
+            # sys.exit()
 
-        except Exception as e:
-            print "Got exception: ", e
+        # except Exception as e:
+            # print "Got exception: ", e
 
 if __name__ == '__main__':
     main(sys.argv)

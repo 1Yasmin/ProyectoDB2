@@ -116,9 +116,7 @@ class databaseManager:
 
             with open("c:\\databases\\"+baseActual+'\\'+"Tabla"+tableName+'.json', 'w') as outfile:
                 json.dump(nombre, outfile)
-        
-    def columnConstraint(self, signedNumber, literalValue, expr):
-        pass
+
 
     # TODO: Pendiente de completar
     def tableConstraint(self, name, columnName, expr, foreignKey):
@@ -144,17 +142,32 @@ class databaseManager:
         else:
             print "La base de datos no existe"
         
-    def alterTable(self, tableName, newTableName, columnDef, tableConstraint, columnName, name):
-        os.chdir("C:\\databases\\"+baseActual)
+    # def alterTable(self, tableName, newTableName, columnDef, tableConstraint, columnName, name):
+        # os.chdir("C:\\databases\\"+baseActual)
 
-        with open('C:\\databases\metadata.json', 'r') as file:
-                data = json.load(file)
+        # with open('C:\\databases\metadata.json', 'r') as file:
+                # data = json.load(file)
         
         
     def alterDatabase(self, databaseName, newDatabaseName):
-        os.chdir("C:\\")
-        print databaseName + newDatabaseName
-        os.rename(databaseName, newDatabaseName)
-        print "La base de datos " + databaseName + " fue renombrada como " + newDatabaseName
+        #8os.chdir("C:\\databases\\"+baseActual)
+        # os.chdir("C:\\databases")
+        # print baseActual + newDatabaseName
+        # os.rename(baseActual, newDatabaseName)
+        # print "La base de datos " + databaseName + " fue renombrada como " + newDatabaseName
         #else:
         #print "La base de datos no existe"
+        
+        #Verificar que databaseName sea una base de datos existent
+        os.chdir("C:\\databases")
+        if funciones.validarExistencia(".", databaseName):
+            os.rename(databaseName, newDatabaseName)
+            print "La base de datos " + databaseName + " fue renombrada como " + newDatabaseName
+            baseActual = databaseName
+            os.chdir(newDatabaseName)
+        else:
+            print 'La base de datos no existe'
+            
+
+
+            

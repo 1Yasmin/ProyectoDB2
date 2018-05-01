@@ -61,7 +61,7 @@ class sqlProcessingListener(sqlListener):
         dbManager.alterTable(sqlParser().alter_table_specific_stmt(self, ctx).new_table_name());
         
     def exitAlter_table_stmt(self, ctx):
-        self.exitAlterRenameTo(ctx);
+        self.exitAlterRenameTo();
     
     def exitAlter_database_stmt(self, ctx):
         dbManager.alterDatabase(ctx.database_name().getText(), ctx.new_database_name().getText());
@@ -70,4 +70,7 @@ class sqlProcessingListener(sqlListener):
         dbManager.showColumnsFrom(ctx.table_name().getText());
         
     def exitInsert_stmt(self,ctx):
-        dbManager.insertInto(ctx.table_name().getText(), ctx.expr(),ctx.K_VALUES())
+        dbManager.insertInto(ctx.table_name().getText(), ctx.expr(),ctx.K_VALUES());
+        
+    def exitDrop_table_stmt(self,ctx):
+        dbManager.dropTable(ctx.table_name().getText());

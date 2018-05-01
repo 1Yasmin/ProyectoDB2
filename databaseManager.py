@@ -139,13 +139,6 @@ class databaseManager:
         else:
             print "La base de datos no existe"
         
-    # def alterTable(self, tableName, newTableName, columnDef, tableConstraint, columnName, name):
-        # os.chdir("C:\\databases\\"+baseActual)
-
-        # with open('C:\\databases\metadata.json', 'r') as file:
-                # data = json.load(file)
-        
-        
     def alterDatabase(self, databaseName, newDatabaseName):
         os.chdir("C:\\databases")
         if funciones.validarExistencia(".", databaseName):
@@ -168,7 +161,7 @@ class databaseManager:
         for i in range(len(data['columnas'])):
             print data['columnas'][i]['name']
             
-    # duda con el columname (lista devuelve objetoss)
+    # columnName
     def insertInto(self,tableName,expr,columnName):
         print "tableName "
         print tableName
@@ -177,6 +170,14 @@ class databaseManager:
         print "columnNAme "
         print columnName
         
+    def dropTable(self,tableName):
+        os.chdir("C:\\databases\\"+baseActual)
+        os.remove('Tabla'+tableName+'.json')
+        with open("C:\\databases\\"+baseActual+"\\metadataTabla.json") as file:
+            data = json.load(file)
         
-        
+        del data['tables']
 
+        
+    def showTables(self):
+        pass

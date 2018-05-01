@@ -74,7 +74,7 @@ class databaseManager:
         
     def createTable(self, tableName, columnas):
         # Verificar que la tabla no exista ya en la base de datos
-        if funciones.validarExistencia("c:\\databases\\"+baseActual, tableName):
+        if funciones.validarExistenciaTable(baseActual, tableName):
             print 'La tabla ya existe, cambie el nombre'
         else:
             # Modificar la metadata de las tablas
@@ -85,13 +85,11 @@ class databaseManager:
             with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'w') as file:
                 json.dump(data, file)
             # Modificar archivo de metadata para agregar una nueva tabla a la base de datos actual
-            n = 0
 
             with open('C:\\databases\metadata.json', 'r') as file:
                 data = json.load(file)
-                print n
                 print len(data['bases'])
-                while n < len(data['bases']):
+                for n in range(len(data['bases'])):
                     print n
                     if data['bases'][n]['data'] == baseActual:
                         tableNum = data['bases'][n]['tables']
@@ -101,7 +99,6 @@ class databaseManager:
                         #data['bases'].append({"data": name})
                         with open('C:\\databases\metadata.json', 'w') as file:
                             json.dump(data, file)
-                    n = n + 1
 
             # Crear el archivo para la tabla
             nombre = "Tabla"+tableName
@@ -150,15 +147,6 @@ class databaseManager:
         
         
     def alterDatabase(self, databaseName, newDatabaseName):
-        #8os.chdir("C:\\databases\\"+baseActual)
-        # os.chdir("C:\\databases")
-        # print baseActual + newDatabaseName
-        # os.rename(baseActual, newDatabaseName)
-        # print "La base de datos " + databaseName + " fue renombrada como " + newDatabaseName
-        #else:
-        #print "La base de datos no existe"
-        
-        #Verificar que databaseName sea una base de datos existent
         os.chdir("C:\\databases")
         if funciones.validarExistencia(".", databaseName):
             os.rename(databaseName, newDatabaseName)
@@ -167,7 +155,28 @@ class databaseManager:
             os.chdir(newDatabaseName)
         else:
             print 'La base de datos no existe'
-            
+    
+    # duda clases y funciones del alter
+    def alterTable(self, specificStmt):
+        os.chdir("C:\\databases")
+        print specificStmt
 
-
+    def showColumnsFrom(self,tableName):
+        os.chdir("C:\\databases")
+        with open("c:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'r') as file:
+                data = json.load(file)
+        for i in range(len(data['columnas'])):
+            print data['columnas'][i]['name']
             
+    # duda con el columname (lista devuelve objetoss)
+    def insertInto(self,tableName,expr,columnName):
+        print "tableName "
+        print tableName
+        print "expr "
+        print expr[0]
+        print "columnNAme "
+        print columnName
+        
+        
+        
+

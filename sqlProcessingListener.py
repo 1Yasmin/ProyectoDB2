@@ -1,4 +1,5 @@
 from sqlListener import sqlListener
+from sqlParser import sqlParser
 from databaseManager import databaseManager
 import pdb
 
@@ -28,7 +29,7 @@ class sqlProcessingListener(sqlListener):
         dbManager.showDatabase();
         
     def exitCreate_table_stmt(self, ctx):
-        pdb.set_trace()
+        #pdb.set_trace()
 
         dbManager.createTable(
             ctx.table_name().getText(),
@@ -55,8 +56,18 @@ class sqlProcessingListener(sqlListener):
     def exitDrop_database_stmt(self, ctx):
         dbManager.dropDatabase(ctx.database_name().getText());
         
+    def exitAlterRenameTo (self, ctx):
+        print(ctx)
+        dbManager.alterTable(sqlParser().alter_table_specific_stmt(self, ctx).new_table_name());
+        
     def exitAlter_table_stmt(self, ctx):
-        dbManager.alterTable(ctx.table_name().getText(),ctx.new_table_name().getText(),ctx.column_def(),ctx.table_constraint(),ctx.column_name(), ctx.name());
+        self.exitAlterRenameTo(ctx);
     
     def exitAlter_database_stmt(self, ctx):
         dbManager.alterDatabase(ctx.database_name().getText(), ctx.new_database_name().getText());
+    
+    def exitShow_columns_stmt(self,ctx):
+        dbManager.showColumnsFrom(ctx.table_name().getText());
+        
+    def exitInsert_stmt(self,ctx):
+        dbManager.insertInto(ctx.table_name().getText(), ctx.expr(),ctx.K_VALUES())

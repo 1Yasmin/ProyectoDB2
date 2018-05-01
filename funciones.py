@@ -12,3 +12,15 @@ def validarExistencia(path, name):
             valid = True
     print valid
     return valid
+    
+def validarExistenciaTable(baseActual, tableName):
+    valid = False
+    with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'r') as file:
+        data = json.load(file)
+    for i in range(len(data['tables'])):
+        if (data['tables'][i]['name'] == tableName):
+            valid = False
+        else:
+            valid = True
+    return valid
+        

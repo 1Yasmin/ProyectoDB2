@@ -2486,13 +2486,11 @@ class sqlParser ( Parser ):
             else:
                 return self.getTypedRuleContext(sqlParser.ExprContext,i)
 
-
         def column_name(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(sqlParser.Column_nameContext)
             else:
                 return self.getTypedRuleContext(sqlParser.Column_nameContext,i)
-
 
         def getRuleIndex(self):
             return sqlParser.RULE_insert_stmt

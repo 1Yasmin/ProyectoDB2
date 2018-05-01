@@ -74,3 +74,6 @@ class sqlProcessingListener(sqlListener):
         
     def exitDrop_table_stmt(self,ctx):
         dbManager.dropTable(ctx.table_name().getText());
+        
+    def exitShow_tables_stmt(self,ctx):
+        dbManager.showTables();

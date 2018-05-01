@@ -173,11 +173,17 @@ class databaseManager:
     def dropTable(self,tableName):
         os.chdir("C:\\databases\\"+baseActual)
         os.remove('Tabla'+tableName+'.json')
-        with open("C:\\databases\\"+baseActual+"\\metadataTabla.json") as file:
+        with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'w') as file:
             data = json.load(file)
         
         del data['tables']
 
         
-    def showTables(self):
-        pass
+    def showTables(self,):
+        os.chdir("C:\\databases\\")
+        #os.chdir("C:\\databases\\" +baseActual+ "\\metadataTabla.json")
+        with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'r') as file:
+                data = json.load(file)
+        print "Las tablas en "+baseActual+" son: "
+        for i in range(len(data['tables'])):
+            print data['tables'][i]['name']

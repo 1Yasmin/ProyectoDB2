@@ -202,22 +202,30 @@ class databaseManager:
     def dropTable(self,tableName): # Borrar el 1 de la metadata.json
         os.chdir("C:\\databases\\"+baseActual)
         if funciones.validarExistenciaTable(baseActual, tableName):
-            # Se borra el archivo json de la tabla
-            os.remove('Tabla'+tableName+'.json')
-            with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'r') as file:
-                data = json.load(file)
-            # Se borra el objeto tabla del archivo json
-                n = 0
-                while n < (len(data['tables'])):
-                    #print data['bases'][n]['name']
-                    if data['tables'][n]['name'] == tableName:
-                        del data['tables'][n]
-                    n = n+1
-            with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'w') as file:
-                json.dump(data,file)
-            # print data['tables']
-            # del data['tables']
-            print 'Se elimino la tabla '+tableName+' con exito'
+            
+            print "Borrar tabla " + tableName + " con 5 registros "
+            deseaBorrar = raw_input("(si/no)\n")
+            if deseaBorrar == "si":
+                # Se borra el archivo json de la tabla
+                os.remove('Tabla'+tableName+'.json')
+                with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'r') as file:
+                    data = json.load(file)
+                # Se borra el objeto tabla del archivo json
+                    n = 0
+                    while n < (len(data['tables'])):
+                        #print data['bases'][n]['name']
+                        if data['tables'][n]['name'] == tableName:
+                            del data['tables'][n]
+                        n = n+1
+                with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'w') as file:
+                    json.dump(data,file)
+                # print data['tables']
+                # del data['tables']
+                print 'Se elimino la tabla '+tableName+' con exito'
+            elif deseaBorrar == "NO":
+                print "No se borro la base de datos"
+            else:
+                print "Por favor, escriba si o no"
         else:
             print 'Esa tabla no existe'
 

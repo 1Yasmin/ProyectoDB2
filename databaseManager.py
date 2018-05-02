@@ -199,7 +199,7 @@ class databaseManager:
         print "columnNAme "
         print columnName
         
-    def dropTable(self,tableName):
+    def dropTable(self,tableName): # Borrar el 1 de la metadata.json
         os.chdir("C:\\databases\\"+baseActual)
         if funciones.validarExistenciaTable(baseActual, tableName):
             # Se borra el archivo json de la tabla
@@ -207,8 +207,16 @@ class databaseManager:
             with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'r') as file:
                 data = json.load(file)
             # Se borra el objeto tabla del archivo json
-            print data['tables']
-            del data['tables']
+                n = 0
+                while n < (len(data['tables'])):
+                    #print data['bases'][n]['name']
+                    if data['tables'][n]['name'] == tableName:
+                        del data['tables'][n]
+                    n = n+1
+            with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'w') as file:
+                json.dump(data,file)
+            # print data['tables']
+            # del data['tables']
             print 'Se elimino la tabla '+tableName+' con exito'
         else:
             print 'Esa tabla no existe'

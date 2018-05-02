@@ -141,31 +141,25 @@ class databaseManager:
     def dropDatabase(self, database_name):
         os.chdir("C:\\databases")
         if funciones.validarExistencia(".", database_name):
-            shutil.rmtree("c:\\databases\\"+database_name)
-            with open('C:\\databases\metadata.json', 'r') as file:
-                data = json.load(file)
-                #del data['bases'][1][database_name]
-            
-            
-            n = 0
-            #print "las bases son "
-            while n < (len(data['bases'])):
-                #print data['bases'][n]['name']
-                if data['bases'][n]['name'] == database_name:
-                    del data['bases'][n]['name']
-                    # r = 23
-                    # deseaBorrar = raw_input("Borrar base de datos " + database_name + " con "+ "registros (si/no)\n")
-                    # # FALTA CALCULAR LOS REGISTROS
-                    # deseaBorrar.upper()
-                    # if deseaBorrar == "SI":  
-                    #     #print "la que quieres eliminar es "
-                    #     del data['bases'][n]['name']
-                    #     print "La base de datos se elimino con exito"
-                    # elif deseaBorrar == "NO":
-                    #     print "No se borro la base de datos"
-                    # else:
-                    #     print "Por favor, escriba si o no"
-                n = n+1
+            print "Borrar base de datos " + database_name + " con 5 registros "
+            deseaBorrar = raw_input("(si/no)\n")
+            if deseaBorrar == "si":
+                shutil.rmtree("c:\\databases\\"+database_name)
+                with open('C:\\databases\metadata.json', 'r') as file:
+                    data = json.load(file)
+                    #del data['bases'][1][database_name]  
+                n = 0
+                #print "las bases son "
+                while n < (len(data['bases'])):
+                    #print data['bases'][n]['name']
+                    if data['bases'][n]['name'] == database_name:
+                        del data['bases'][n]['name']
+                    n = n+1
+            elif deseaBorrar == "NO":
+                print "No se borro la base de datos"
+            else:
+                print "Por favor, escriba si o no"
+
             with open('C:\\databases\metadata.json', 'w') as file:
                 json.dump(data, file)
 

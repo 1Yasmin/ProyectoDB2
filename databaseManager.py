@@ -153,7 +153,7 @@ class databaseManager:
                 while n < (len(data['bases'])):
                     #print data['bases'][n]['name']
                     if data['bases'][n]['name'] == database_name:
-                        del data['bases'][n]['name']
+                        del data['bases'][n]
                     n = n+1
             elif deseaBorrar == "NO":
                 print "No se borro la base de datos"
@@ -201,11 +201,17 @@ class databaseManager:
         
     def dropTable(self,tableName):
         os.chdir("C:\\databases\\"+baseActual)
-        os.remove('Tabla'+tableName+'.json')
-        with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'w') as file:
-            data = json.load(file)
-        
-        del data['tables']
+        if funciones.validarExistenciaTable(baseActual, tableName):
+            # Se borra el archivo json de la tabla
+            os.remove('Tabla'+tableName+'.json')
+            with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'r') as file:
+                data = json.load(file)
+            # Se borra el objeto tabla del archivo json
+            print data['tables']
+            del data['tables']
+            print 'Se elimino la tabla '+tableName+' con exito'
+        else:
+            print 'Esa tabla no existe'
 
         
     def showTables(self,):

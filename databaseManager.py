@@ -3,12 +3,14 @@ import os
 import os.path
 import funciones
 import shutil
+import pdb
 
 class databaseManager:
 
     baseActual = ""
 
     def __init__(self):
+    
         # Verificar que exista la carpeta 'databases' que es donde se crearan las bases de datos
         os.chdir("C:\\")
         if os.path.exists("C:\\databases") == False:
@@ -18,19 +20,12 @@ class databaseManager:
         
         # Verificar que exista el archivo de metadata databases/metadata.json
         if os.path.exists("C:\\databases\metadata.json") == False:
-            print 'no existe, se creo'
             metadata = {}
             metadata['bases'] = [] 
             #os.mkdir("databases/metadata.json")
             with open('metadata.json', 'w') as outfile:
-                json.dump(metadata, outfile)
-            print metadata
-            
-            
-        else:
-            print 'Si'
-
-        # Si no existe, crearlo
+                json.dump(metadata, outfile)   
+        print "Bienvenido al DBM de Yasmin y Samantha"
 
     def useDatabase(self, db):
         global baseActual
@@ -48,7 +43,7 @@ class databaseManager:
         os.chdir("C:\\databases")
         #validar que ninguna carpeta tenga ese nombre
         if funciones.validarExistencia(".", name):
-            print "Ya existe la base de datos, cambie el nombre"
+            print "Ya existe la base de datos, cambie el nombre por favor"
         else:
         # Crear carpeta con el nombre name
             os.mkdir(name)
@@ -66,40 +61,17 @@ class databaseManager:
                 json.dump(metadataTabla, outfile)
 
     def showDatabase(self):
-        list = os.listdir(".")
+        list = os.listdir("C:\\databases")
         print 'Las bases de datos disponibles:'
         for elemento in list:
             if elemento != "metadata.json":
                 print elemento
         
-    def createTable(self, tableName, columnas):
+    def createTable(self, tableName, columnas, constraint):
         # Verificar que la tabla no exista ya en la base de datos
         if funciones.validarExistenciaTable(baseActual, tableName):
             print 'La tabla ya existe, cambie el nombre'
         else:
-            # Modificar la metadata de las tablas
-            with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'r') as file:
-                data = json.load(file)
-                print data
-            data['tables'].append({'name':tableName, 'cantRegistros': 0, 'cantRestricciones': 0})
-            with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'w') as file:
-                json.dump(data, file)
-            # Modificar archivo de metadata para agregar una nueva tabla a la base de datos actual
-
-            with open('C:\\databases\metadata.json', 'r') as file:
-                data = json.load(file)
-                print len(data['bases'])
-                for n in range(len(data['bases'])):
-                    print n
-                    if data['bases'][n]['data'] == baseActual:
-                        tableNum = data['bases'][n]['tables']
-                        tableNum = tableNum + 1
-                        print tableNum
-                        data['bases'][n] = {"data": baseActual, "tables": tableNum}
-                        #data['bases'].append({"data": name})
-                        with open('C:\\databases\metadata.json', 'w') as file:
-                            json.dump(data, file)
-
             # Crear el archivo para la tabla
             nombre = "Tabla"+tableName
             nombre = {}
@@ -111,26 +83,61 @@ class databaseManager:
             for i in list:
                 nombre['columnas'].append({'name': i.column_name().getText(), 'type': i.type_name().getText()})
 
+            const = constraint 
+           # pdb.set_trace()
+            if (const != []) == True:
+                a = 0
+                while a < len(const):
+                    if funciones.tipoConstraint(const[a]) == 'PRIMARY':
+                        nombre['constraints'].append(
+                        {'type': 'PRIMARY', 
+                        'name': funciones.validarValor(const[a].name()),
+                        'column_name': funciones.columnName(const[a])
+                        })
+                        a = a+1
+                    if funciones.tipoConstraint(const[a]) == 'FOREIGN':
+                        nombre['constraints'].append(
+                        {'type': 'FOREING', 
+                        'name': funciones.validarValor(const[a].name()),
+                        'column_name': funciones.columnName(const[a]),
+                        'ref': funciones.validarValor(const[a].foreign_key_clause())
+                        })
+                        a = a+1
+                    if funciones.tipoConstraint(const[a]) == 'CHECK':
+                        nombre['constraints'].append(
+                        {'type': 'CHECK', 
+                        'name': funciones.validarValor(const[a].name()),
+                        'column_name': funciones.columnName(const[a]),
+                        'expr': funciones.validarValor(const[a].expr())
+                        })
+                        a = a+1
+                    if funciones.tipoConstraint(const[a]) == 'UNIQUE':
+                        nombre['constraints'].append(
+                        {'type': 'UNIQUE', 
+                        'name': funciones.validarValor(const[a].name()),
+                        'column_name': funciones.columnName(const[a])
+                        })
+                        a = a+1
             with open("c:\\databases\\"+baseActual+'\\'+"Tabla"+tableName+'.json', 'w') as outfile:
-                json.dump(nombre, outfile)
+                json.dump(nombre, outfile) 
+        # Modificar la metadata de las tablas
+            with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'r') as file:
+                data = json.load(file)
+            data['tables'].append({'name':tableName, 'cantRegistros': 0, 'cantRestricciones': len(const)})
+            with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'w') as file:
+                json.dump(data, file)
+        #Modificar archivo de metadata para agregar una nueva tabla a la base de datos actual
 
+            with open('C:\\databases\metadata.json', 'r') as file:
+                data = json.load(file)
+                for n in range(len(data['bases'])):
+                    if data['bases'][n]['data'] == baseActual:
+                        tableNum = data['bases'][n]['tables']
+                        tableNum = tableNum + 1
+                        data['bases'][n] = {"data": baseActual, "tables": tableNum}
+                        with open('C:\\databases\metadata.json', 'w') as file:
+                            json.dump(data, file) 
 
-    # TODO: Pendiente de completar
-    def tableConstraint(self, name, columnName, expr, foreignKey):
-        with open('data.json', 'r') as file:
-            data = json.load(file)
-
-        print n
-
-        data['constraints'].append({"tipo": "hola"})
-
-        with open('data.json', 'w') as file:
-            json.dump(data, file)
-
-        
-    def insertStmt(self, tableName, expr, columnName):
-        pass
-        
     def dropDatabase(self, database_name):
         os.chdir("C:\\databases")
         if funciones.validarExistencia(".", database_name):

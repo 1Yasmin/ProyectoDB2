@@ -18,7 +18,6 @@ class sqlProcessingListener(sqlListener):
         dbManager.useDatabase(ctx.database_name().getText());
 
     def exitCreate_database_stmt(self, ctx):
-        print 'Creando DB'
         # Llamar a clase dbManager para que cree la bd
         
         dbManager.createDatabase(ctx.database_name().getText());
@@ -34,22 +33,9 @@ class sqlProcessingListener(sqlListener):
         dbManager.createTable(
             ctx.table_name().getText(),
             ctx.column_def(None),
+            ctx.table_constraint(None)
         );
-    
-    def processConstraints(self, constraints):
-        pass
-
-    #def exitColumn_constraint(self, ctx):
-    #dbManager.columnConstraint(ctx.signed_number().getText(), ctx.literal_value().getText(), ctx.expr().getText());
-
-    # def exitTable_constraint(self, ctx):
-        # dbManager.tableConstraint(
-            # ctx.name().getText(),
-            # ctx.column_name(),
-            # ctx.expr().getText,
-            # ctx.foreign_key_clause()
-        # );
-
+        
     def exitInsert_stmt(self, ctx):
         dbManager.insertStmt(ctx.table_name().getText(), ctx.expr(), ctx.column_name());
         

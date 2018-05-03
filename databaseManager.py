@@ -204,21 +204,68 @@ class databaseManager:
                 if data['tables'][i]['name'] == tableName:
                     exist = True
             if exist:
-                #if len(expr) == len()
+                with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'r') as file:
+                    tableData = json.load(file)
+                #pdb.set_trace()
+                tableColumName = []
+                fila = []
+                #Verificar que no ingrese mas valores que la cantidad de columnas
+                if len(expr) <= len(tableData['columnas']) and len(columnName) <=len(tableData['columnas']):
+                    
+                    for i in range(len(tableData['columnas'])):
+                        tableColumName.append(tableData['columnas'][i]['name'])
+                        fila.append({tableData['columnas'][i]['name']: None})
+                        
+                    #verificar que la columna exista
+                    for i in range(len(columnName)):
+                        if columnName[i].getText() in tableColumName:
+                            for a in range(len(tableData['columnas'])):
+                                if tableData['columnas'][a]['name'] == columnName[i].getText():
+                                    pass
+                                    #Verifica tipo de dato y columna
+                                    # if funciones.queTipo(expr[i].getText(), tableData['columnas'][a]['type']):
+                                        # pass
+                                    # else:
+                                        # print "El tipo de dato no corresponde"
+                                        # sys.exit()
+                        else:
+                            print "El nombre de la columna no esta definido"
+                            sys.exit()
+                else:
+                    print 'El numero de valores no concuerda con el numero de columnas'
+                    sys.exit()              
                 pass
                 
-                #concordancia de datos a insertar  
-                
-                #Verificar columnas e insertar datos
-                
+                #Insertar los datos
+                for i in range(len(columnName)):
+                    for a in range(len(fila)):
+                        print "1"
+                        #pdb.set_trace()
+                        if fila[a].keys()[0] == columnName[i].getText():
+                            print "2"
+                            #pdb.set_trace()
+                            new = {fila[a].keys()[0]:expr[i].getText()}
+                            fila[a] = new 
+                            print "2.5"
+
+                #Insertar los datos
+                # for i in range(len(columnName)):
+                    # for a in range(len(fila)):
+                        # print "1"
+                        # if fila[a].keys()[0] == columnName[i].getText():
+                            # print "2"
+                            # fila[fila[a].keys()[0]] = expr[i].getText()
+                print "3"
+                tableData['registros'].append(fila)
+                print "4"
+                with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
+                    print "5"
+                    json.dump(tableData, file)
+            
             else:
                 print "La tabla no existe en la base de datos "+baseActual
-        # print "tableName "
-        # print tableName
-        # print "expr "
-        # print expr[0]
-        # print "columnNAme "
-        # print columnName
+                
+
         
     def dropTable(self,tableName): # Borrar el 1 de la metadata.json
         os.chdir("C:\\databases\\"+baseActual)
@@ -272,6 +319,8 @@ class databaseManager:
         print tablaActual
         print newTableName
 
+        
+        #calcular la frecuencia promedio y mover el objeto a la velocidad de la frecuencia
         # os.chdir("C:\\databases\\"+baseActual)
         # if funciones.validarExistenciaTable(baseActual, tableName):
 

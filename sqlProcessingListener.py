@@ -34,7 +34,7 @@ class sqlProcessingListener(sqlListener):
         );
 
     def exitInsert_stmt(self, ctx):
-        dbManager.insertStmt(ctx.table_name().getText(), ctx.expr(), ctx.column_name());
+        dbManager.insertInto(ctx.table_name().getText(), ctx.expr(), ctx.column_name());
 
     def exitDrop_database_stmt(self, ctx):
         dbManager.dropDatabase(ctx.database_name().getText());
@@ -90,9 +90,6 @@ class sqlProcessingListener(sqlListener):
     
     def exitShow_columns_stmt(self,ctx):
         dbManager.showColumnsFrom(ctx.table_name().getText());
-        
-    def exitInsert_stmt(self,ctx):
-        dbManager.insertInto(ctx.table_name().getText(), ctx.expr(),ctx.K_VALUES());
         
     def exitDrop_table_stmt(self,ctx):
         dbManager.dropTable(ctx.table_name().getText());

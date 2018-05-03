@@ -48,6 +48,11 @@ def columnName(arr):
             arrC = arrC +1
     return arrCol
 
+def tipoValido(tipo):
+    if tipo == "INT" or tipo == "CHAR" or tipo == "FLOAT" or tipo == "DATE":
+        return True
+    else:
+        return False
 
 
 

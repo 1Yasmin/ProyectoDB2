@@ -11,10 +11,6 @@ class sqlProcessingListener(sqlListener):
     def __init__(self):
         #self.db = db
         pass
-
-    def enterParse(self,ctx):
-        pass
-        #print 'Parsing'
         
     def exitUse_database_stmt(self, ctx):
         dbManager.useDatabase(ctx.database_name().getText());
@@ -42,9 +38,6 @@ class sqlProcessingListener(sqlListener):
 
     def exitDrop_database_stmt(self, ctx):
         dbManager.dropDatabase(ctx.database_name().getText());
-
-
-
 
     def enterAlter_table_stmt(self, ctx):
         # Opcion 1: Setear la tabla que va a ser modificada

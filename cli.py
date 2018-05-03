@@ -10,17 +10,22 @@ import pdb
 
 from antlr4.error.ErrorListener import ErrorListener
 
+
 class ParserException(Exception):
     def __init__(self, value):
         self.value = value
+
     def __str__(self):
         return repr(self.value)
 
+
 class ParserExceptionErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
-        raise ParserException("line " + str(line) + ":" + str(column) + " " + msg)
+        raise ParserException("line " + str(line) +
+                              ":" + str(column) + " " + msg)
 
 #dbManager = DatabaseManager();
+
 
 def parse(text):
     lexer = sqlLexer(InputStream(text))
@@ -40,13 +45,14 @@ def parse(text):
     # definido arriba
     sqlPL = sqlProcessingListener()
     walker = ParseTreeWalker()
-    walker.walk(sqlPL, tree)	
+    walker.walk(sqlPL, tree)
+
 
 '''
 Uso: python cli.py
-
 Las construcciones validas para esta gramatica son todas aquellas 
 '''
+
 
 def main(argv):
 
@@ -57,7 +63,7 @@ def main(argv):
             if (text == 'exit'):
                 sys.exit()
 
-            parse(text);
+            parse(text)
             print "Valid"
 
         except ParserException as e:
@@ -69,6 +75,7 @@ def main(argv):
 
         except Exception as e:
             print "Got exception: ", e
+
 
 if __name__ == '__main__':
     main(sys.argv)

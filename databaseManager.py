@@ -8,6 +8,7 @@ import pdb
 class databaseManager:
 
     baseActual = ""
+    tablaActual = ""
 
     def __init__(self):
     
@@ -37,8 +38,7 @@ class databaseManager:
             os.chdir(db)
         else:
             print 'La base de datos no existe'
-                
-                
+
     def createDatabase(self, name):
         os.chdir("C:\\databases")
         #validar que ninguna carpeta tenga ese nombre
@@ -177,11 +177,6 @@ class databaseManager:
             os.chdir(newDatabaseName)
         else:
             print 'La base de datos no existe'
-    
-    # duda clases y funciones del alter
-    def alterTable(self, specificStmt):
-        os.chdir("C:\\databases")
-        print specificStmt
 
     def showColumnsFrom(self,tableName):
         os.chdir("C:\\databases")
@@ -229,7 +224,6 @@ class databaseManager:
         else:
             print 'Esa tabla no existe'
 
-        
     def showTables(self,):
         os.chdir("C:\\databases\\")
         #os.chdir("C:\\databases\\" +baseActual+ "\\metadataTabla.json")
@@ -238,3 +232,63 @@ class databaseManager:
         print "Las tablas en "+baseActual+" son: "
         for i in range(len(data['tables'])):
             print data['tables'][i]['name']
+
+    def setCurrentDatabase(self, nombreTabla):
+        tablaActual = nombreTabla
+
+    def alterTable(self, tableName):
+        os.chdir("C:\\databases")
+        #global tabName = tableName.getText()
+        
+
+    def alterRenameTo(self, newTableName):
+        print "holiwe"
+        print tablaActual
+        print newTableName
+
+        # os.chdir("C:\\databases\\"+baseActual)
+        # if funciones.validarExistenciaTable(baseActual, tableName):
+
+        #     print "Desea cambiar el nombre de la tabla " + tableName + " a " 
+        #     deseaBorrar = raw_input("(si/no)\n")
+        #     if deseaBorrar == "si":
+        #         # Se cambia el archivo json de la tabla
+        #         os.rename('Tabla'+tableName+'.json', 'Tabla'+newTableName+'.json')
+        #         with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'r') as file:
+        #             data = json.load(file)
+        #         # Se cambia el objeto tabla del archivo json
+        #             n = 0
+        #             while n < (len(data['tables'])):
+        #                 #print data['bases'][n]['name']
+        #                 if data['tables'][n]['name'] == tableName:
+        #                #    del data['tables'][n]
+        #                     data[newTableName] = data[tableName]
+        #                     del data[tableName]
+        #                 n = n+1
+        #         with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'w') as file:
+        #             json.dump(data, file)
+        #         print 'Se cambio el nombre de la tabla '+tableName+ 'a'+ newTableName +' con exito'
+        #     elif deseaBorrar == "NO":
+        #         print "No se cambio el nombre de la base de datos"
+        #     else:
+        #         print "Por favor, escriba si o no"
+        # else:
+        #     print 'Esa tabla no existe'
+
+    def alterAddColumn(self, columnDef):
+        os.chdir("C:\\databases")
+        ###
+        print columnDef
+
+    def alterAddConstraint(self, tableConstraint):
+        os.chdir("C:\\databases")
+        print tableConstraint
+
+    def alterDropColumn(self, columnName):
+        os.chdir("C:\\databases")
+        print columnName
+        #
+
+    def alterDropConstraint(self, constraintName):
+        os.chdir("C:\\databases")
+        print constraintName

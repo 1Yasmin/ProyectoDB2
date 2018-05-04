@@ -83,7 +83,6 @@ class sqlProcessingListener(sqlListener):
 
 
 
-
     
     def exitAlter_database_stmt(self, ctx):
         dbManager.alterDatabase(ctx.database_name().getText(), ctx.new_database_name().getText());
@@ -96,3 +95,11 @@ class sqlProcessingListener(sqlListener):
         
     def exitShow_tables_stmt(self,ctx):
         dbManager.showTables();
+
+    def exitSelect_core(self, ctx):
+        #dbManager.selectCore(ctx.result_column().getText(), ctx.expr().getText(), ctx.table_or_subquery().getText(), ctx.join_clause().getText())
+        print ctx.result_column()[0]
+        print ctx.expr()[0]
+        print ctx.table_or_subquery()[0]
+        print ctx.join_clause()
+

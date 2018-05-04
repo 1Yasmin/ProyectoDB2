@@ -223,11 +223,12 @@ class databaseManager:
                                 if tableData['columnas'][a]['name'] == columnName[i].getText():
                                     pass
                                     #Verifica tipo de dato y columna
-                                    # if funciones.queTipo(expr[i].getText(), tableData['columnas'][a]['type']):
-                                        # pass
-                                    # else:
-                                        # print "El tipo de dato no corresponde"
-                                        # sys.exit()
+                                    exptemp=funciones.queTipo(expr[i].getText(), tableData['columnas'][a]['type']
+                                    if exptemp != False: 
+                                        expr[i] = exptemp
+                                    else:
+                                        print "El tipo de dato no corresponde"
+                                        sys.exit()
                         else:
                             print "El nombre de la columna no esta definido"
                             sys.exit()
@@ -306,13 +307,18 @@ class databaseManager:
         for i in range(len(data['tables'])):
             print data['tables'][i]['name']
 
-    def setCurrentDatabase(self, nombreTabla):
+    def setCurrentTable(self, nombreTabla):
         tablaActual = nombreTabla
 
     def alterTable(self, tableName):
         os.chdir("C:\\databases")
         #global tabName = tableName.getText()
-        
+
+
+## Corregir numero de registros
+
+
+
 
     def alterRenameTo(self, newTableName):
         print "holiwe"
@@ -367,3 +373,19 @@ class databaseManager:
     def alterDropConstraint(self, constraintName):
         os.chdir("C:\\databases")
         print constraintName
+
+
+
+
+
+
+    # def selectCore(self, resultColumn, expr, tableOrSubquery,joinClause):
+    #     os.chdir("C:\\databases\\")
+    #     with open("C:\\databases\\"+baseActual+"\\Tabla"+tableName+".json", 'r') as file:
+    #             data=json.load(file)
+    #
+    #     print "Las colunmas en "+tableName+" son: "
+    #     for i in range(len(data['columns'])):
+    #         print data['columns'][i]['name']
+
+

@@ -51,7 +51,6 @@ class databaseManager:
             # Modificar archivo de metadata para agregar un nuevo database
             with open('metadata.json', 'r') as file:
                 data = json.load(file)
-                print data
             data['bases'].append({"name": name, 'tables': 0})
             with open('metadata.json', 'w') as file:
                 json.dump(data, file)
@@ -191,8 +190,8 @@ class databaseManager:
                 data = json.load(file)
         for i in range(len(data['columnas'])):
             print data['columnas'][i]['name']
-            
-    # columnName
+         
+          
     #CREATE TABLE Orders(OrderID int, OrderNumber int, PersonID int, CONSTRAINT pk PRIMARY KEY (OrderID,PersonID), CONSTRAINT pf FOREIGN KEY (PersonID,OrderID) REFERENCES Persons(PersonID,OrderNumber), CONSTRAINT limite CHECK (OrderNumber > 12), CONSTRAINT unico UNIQUE (OrderID, PersonID))
     def insertInto(self,tableName,expr,columnName):
         if baseActual != None:
@@ -206,61 +205,61 @@ class databaseManager:
             if exist:
                 with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'r') as file:
                     tableData = json.load(file)
+                #pdb.set_trace()
                 tableColumName = []
-                #fila = []
+                fila = []
                 #Verificar que no ingrese mas valores que la cantidad de columnas
-                if len(expr) < 3 and len(columnName) < 2:
+                if len(expr) <= len(tableData['columnas']) and len(columnName) <=len(tableData['columnas']):
                     
                     for i in range(len(tableData['columnas'])):
                         tableColumName.append(tableData['columnas'][i]['name'])
-                 #       fila.append({tableData['columnas'][i]['name']: None})
+                        fila.append({tableData['columnas'][i]['name']: None})
                         
                     #verificar que la columna exista
-                    if columnName[0].getText() in tableColumName:
-                        for a in range(len(tableData['columnas'])):
-                            if tableData['columnas'][a]['name'] == columnName[0].getText():
-                                #pass
-                                #Verifica tipo de dato y columna
-                                exptemp = funciones.queTipo(expr[i].getText(), tableData['columnas'][a]['type'])
-                                # 
-                                if exptemp != False:
-                                    expr[i] = exptemp
-                                else:
-                                    print "El tipo de dato por el que desea cambiar no corresponde"
-                                    sys.exit()
-                    else:
-                        print "El nombre de la columna no esta definido"
-                        sys.exit()
+                    for i in range(len(columnName)):
+                        if columnName[i].getText() in tableColumName:
+                            for a in range(len(tableData['columnas'])):
+                                if tableData['columnas'][a]['name'] == columnName[i].getText():
+                                    #Verifica tipo de dato y columna
+                                    exptemp = funciones.queTipo(tableData['columnas'][a]['type'],expr[i].getText())
+                                    print exptemp
+                                    if exptemp != False:
+                                        expr[i] = exptemp
+                                    else:
+                                        print "El tipo de dato por el que desea cambiar no corresponde"
+                                        sys.exit()
+                        else:
+                            print "El nombre de la columna no esta definido"
+                            sys.exit()
                 else:
-                    print 'La gramatica del query no es la correcta'
+                    print 'El numero de valores no concuerda con el numero de columnas'
                     sys.exit()              
                 pass
                 
                 #Insertar los datos
-                pdb.set_trace()
-                tableName['registros']
-                
-                
-                # for a in range(len(fila)):
-                    # print "1"
-                  #  pdb.set_trace()
-                    # if fila[a].keys()[0] == columnName[i].getText():
-                        # new = {fila[a].keys()[0]:expr[i].getText()}
-                        # fila[a] = new 
+                for i in range(len(columnName)):
+                    for a in range(len(fila)):
                         
-                # tableData['registros'].append(fila)
+                        #pdb.set_trace()
+                        if fila[a].keys()[0] == columnName[i].getText():
+                           
+                            #pdb.set_trace()
+                            new = {fila[a].keys()[0]:expr[i]}
+                            fila[a] = new 
+                           
+
+                
+               
+                tableData['registros'].append(fila)
                 print "4"
                 with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
-                    print "5"
+                  
                     json.dump(tableData, file)
             
             else:
                 print "La tabla no existe en la base de datos "+baseActual
-        else:
-            print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
-                
-
-        
+               
+                       
     def dropTable(self,tableName): # Borrar el 1 de la metadata.json
         os.chdir("C:\\databases\\"+baseActual)
         if funciones.validarExistenciaTable(baseActual, tableName):
@@ -309,9 +308,6 @@ class databaseManager:
 
 
 ## Corregir numero de registros
-
-
-
 
     def alterRenameTo(self, newTableName):
         print "holiwe"
@@ -367,8 +363,6 @@ class databaseManager:
         os.chdir("C:\\databases")
         print constraintName
 
-
-
     def updateTable(self, tableName, columnName, expr):
         if baseActual != None:
             #Verificar que la tabla exista
@@ -384,7 +378,7 @@ class databaseManager:
                 tableColumName = []
          
                 #Verificar que no ingrese mas valores que la cantidad de columnas
-                if len(expr) <= len(tableData['columnas']) and len(columnName) <=len(tableData['columnas']):
+                if len(expr) < 3 and len(columnName) < 2:
                     
                     for i in range(len(tableData['columnas'])):
                         tableColumName.append(tableData['columnas'][i]['name'])
@@ -426,8 +420,7 @@ class databaseManager:
         
         else:
             print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
-        
-    
+           
     def delete(self, tableName, condicion):
         if baseActual != None:
             #Verificar que la tabla exista
@@ -492,11 +485,6 @@ class databaseManager:
         else:
             print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
         
-        
-        
-        
-
-
 
     # def selectCore(self, resultColumn, expr, tableOrSubquery,joinClause):
     #     os.chdir("C:\\databases\\")

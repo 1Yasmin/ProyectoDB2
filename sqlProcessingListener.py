@@ -81,9 +81,6 @@ class sqlProcessingListener(sqlListener):
         dbManager.alterDropConstraint( ctx.name().getText())
 
 
-
-
-    
     def exitAlter_database_stmt(self, ctx):
         dbManager.alterDatabase(ctx.database_name().getText(), ctx.new_database_name().getText());
     
@@ -105,8 +102,10 @@ class sqlProcessingListener(sqlListener):
 
     def exitSelect_core(self, ctx):
         #dbManager.selectCore(ctx.result_column().getText(), ctx.expr().getText(), ctx.table_or_subquery().getText(), ctx.join_clause().getText())
-        print ctx.result_column()[0]
-        print ctx.expr()[0]
-        print ctx.table_or_subquery()[0]
-        print ctx.join_clause()
+        pdb.set_trace()
+        #columnas que se deben printear   print ctx.result_column()[0]
+        #Condicion despues del where print ctx.expr()[0]
+        #A que tabla debe ir a buscar print ctx.table_or_subquery()[0]
+        # print ctx.join_clause()
+            #puede regresar None
 

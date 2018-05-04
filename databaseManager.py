@@ -34,7 +34,7 @@ class databaseManager:
         # Verificar que databaseName sea una base de datos existent
         os.chdir("C:\\databases")
         if funciones.validarExistencia(".", db):
-            print 'estas usando la base d datos ' + db
+            print 'Estas usando la base de datos ' + db
             baseActual = db
             os.chdir(db)
         else:
@@ -151,7 +151,7 @@ class databaseManager:
         global baseActual
         os.chdir("C:\\databases")
         if funciones.validarExistencia(".", database_name):
-            print "Borrar base de datos " + database_name + " con 5 registros "
+            print "Borrar base de datos " + database_name
             deseaBorrar = raw_input("(si/no)")
             if deseaBorrar.upper() == "SI":
                 shutil.rmtree("c:\\databases\\"+database_name)
@@ -220,13 +220,19 @@ class databaseManager:
                             for a in range(len(tableData['columnas'])):
                                 if tableData['columnas'][a]['name'] == columnName[i].getText():
                                     #Verifica tipo de dato y columna
-                                    exptemp = funciones.queTipo(tableData['columnas'][a]['type'],expr[i].getText())
-                                    print exptemp
-                                    if exptemp != False:
-                                        expr[i] = exptemp
+                                    if tableData['columnas'][a]['type'] != 'INT':
+                                        exptemp = funciones.queTipo(tableData['columnas'][a]['type'],expr[i].getText())
+                                        print exptemp
+                                        if exptemp != False:
+                                            expr[i] = exptemp
+                                            print "Se ha insertado el dato: "
+                                            print expr[i]
+                                            print "en la columna "+ columnName[i].getText()+" de la tabla "+tableName
+                                        else:
+                                            print "El tipo de dato por el que desea cambiar no corresponde"
+                                            sys.exit()
                                     else:
-                                        print "El tipo de dato por el que desea cambiar no corresponde"
-                                        sys.exit()
+                                        pass
                         else:
                             print "El nombre de la columna no esta definido"
                             sys.exit()
@@ -303,8 +309,6 @@ class databaseManager:
         print tablaActual
         print newTableName
 
-        
-        #calcular la frecuencia promedio y mover el objeto a la velocidad de la frecuencia
         # os.chdir("C:\\databases\\"+baseActual)
         # if funciones.validarExistenciaTable(baseActual, tableName):
 

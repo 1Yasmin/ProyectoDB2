@@ -95,6 +95,13 @@ class sqlProcessingListener(sqlListener):
         
     def exitShow_tables_stmt(self,ctx):
         dbManager.showTables();
+        
+        
+    def exitUpdate_stmt(self, ctx): 
+        dbManager.updateTable(ctx.table_name().getText(), ctx.column_name(),ctx.expr());
+    
+    def exitDelete_stmt(self, ctx):
+        dbManager.delete(ctx.table_name().getText(), ctx.expr())
 
     def exitSelect_core(self, ctx):
         #dbManager.selectCore(ctx.result_column().getText(), ctx.expr().getText(), ctx.table_or_subquery().getText(), ctx.join_clause().getText())

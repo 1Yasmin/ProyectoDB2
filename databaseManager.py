@@ -206,58 +206,49 @@ class databaseManager:
             if exist:
                 with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'r') as file:
                     tableData = json.load(file)
-                #pdb.set_trace()
                 tableColumName = []
-                fila = []
+                #fila = []
                 #Verificar que no ingrese mas valores que la cantidad de columnas
-                if len(expr) <= len(tableData['columnas']) and len(columnName) <=len(tableData['columnas']):
+                if len(expr) < 3 and len(columnName) < 2:
                     
                     for i in range(len(tableData['columnas'])):
                         tableColumName.append(tableData['columnas'][i]['name'])
-                        fila.append({tableData['columnas'][i]['name']: None})
+                 #       fila.append({tableData['columnas'][i]['name']: None})
                         
                     #verificar que la columna exista
-                    for i in range(len(columnName)):
-                        if columnName[i].getText() in tableColumName:
-                            for a in range(len(tableData['columnas'])):
-                                if tableData['columnas'][a]['name'] == columnName[i].getText():
-                                    pass
-                                    #Verifica tipo de dato y columna
-                                    exptemp=funciones.queTipo(expr[i].getText(), tableData['columnas'][a]['type']
-                                    if exptemp != False: 
-                                        expr[i] = exptemp
-                                    else:
-                                        print "El tipo de dato no corresponde"
-                                        sys.exit()
-                        else:
-                            print "El nombre de la columna no esta definido"
-                            sys.exit()
+                    if columnName[0].getText() in tableColumName:
+                        for a in range(len(tableData['columnas'])):
+                            if tableData['columnas'][a]['name'] == columnName[0].getText():
+                                #pass
+                                #Verifica tipo de dato y columna
+                                exptemp = funciones.queTipo(expr[i].getText(), tableData['columnas'][a]['type'])
+                                # 
+                                if exptemp != False:
+                                    expr[i] = exptemp
+                                else:
+                                    print "El tipo de dato por el que desea cambiar no corresponde"
+                                    sys.exit()
+                    else:
+                        print "El nombre de la columna no esta definido"
+                        sys.exit()
                 else:
-                    print 'El numero de valores no concuerda con el numero de columnas'
+                    print 'La gramatica del query no es la correcta'
                     sys.exit()              
                 pass
                 
                 #Insertar los datos
-                for i in range(len(columnName)):
-                    for a in range(len(fila)):
-                        print "1"
-                        #pdb.set_trace()
-                        if fila[a].keys()[0] == columnName[i].getText():
-                            print "2"
-                            #pdb.set_trace()
-                            new = {fila[a].keys()[0]:expr[i].getText()}
-                            fila[a] = new 
-                            print "2.5"
-
-                #Insertar los datos
-                # for i in range(len(columnName)):
-                    # for a in range(len(fila)):
-                        # print "1"
-                        # if fila[a].keys()[0] == columnName[i].getText():
-                            # print "2"
-                            # fila[fila[a].keys()[0]] = expr[i].getText()
-                print "3"
-                tableData['registros'].append(fila)
+                pdb.set_trace()
+                tableName['registros']
+                
+                
+                # for a in range(len(fila)):
+                    # print "1"
+                  #  pdb.set_trace()
+                    # if fila[a].keys()[0] == columnName[i].getText():
+                        # new = {fila[a].keys()[0]:expr[i].getText()}
+                        # fila[a] = new 
+                        
+                # tableData['registros'].append(fila)
                 print "4"
                 with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
                     print "5"
@@ -265,6 +256,8 @@ class databaseManager:
             
             else:
                 print "La tabla no existe en la base de datos "+baseActual
+        else:
+            print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
                 
 
         
@@ -376,6 +369,132 @@ class databaseManager:
 
 
 
+    def updateTable(self, tableName, columnName, expr):
+        if baseActual != None:
+            #Verificar que la tabla exista
+            exist = False
+            with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'r') as file:
+                data = json.load(file)
+            for i in range(len(data['tables'])):
+                if data['tables'][i]['name'] == tableName:
+                    exist = True
+            if exist:
+                with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'r') as file:
+                        tableData = json.load(file)
+                tableColumName = []
+         
+                #Verificar que no ingrese mas valores que la cantidad de columnas
+                if len(expr) <= len(tableData['columnas']) and len(columnName) <=len(tableData['columnas']):
+                    
+                    for i in range(len(tableData['columnas'])):
+                        tableColumName.append(tableData['columnas'][i]['name'])
+                     
+                        
+                    #verificar que la columna exista
+                    for i in range(len(columnName)):
+                        if columnName[i].getText() in tableColumName:
+                            for a in range(len(tableData['columnas'])):
+                                if tableData['columnas'][a]['name'] == columnName[i].getText():
+                                    pass
+                                    #Verifica tipo de dato y columna
+                                    # if funciones.queTipo(expr[1].getText(), tableData['columnas'][a]['type']):
+                                        # pass
+                                    # else:
+                                        # print "El tipo de dato no corresponde"
+                                        # sys.exit()
+                                
+                        else:
+                            print "El nombre de la columna no esta definido"
+                            sys.exit()
+                else:
+                    print 'El numero de valores no concuerda con el numero de columnas'
+                    sys.exit()              
+                
+               
+                #Actualizar datos
+                for i in range(len(tableData['registros'])):
+                    for f in range(len(tableData['registros'][i])):
+                        if tableData['registros'][i][f].keys()[0] == columnName[0].getText():
+                           # pdb.set_trace()
+                            if tableData['registros'][i][f][columnName[0].getText()] == expr[1].getText()[(len(columnName[0].getText())+1):]:
+                                tableData['registros'][i][f][columnName[0].getText()] = expr[0].getText()
+                with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
+                    json.dump(tableData, file)
+            
+            else:
+                print "La tabla no existe en la base de datos "+baseActual
+        
+        else:
+            print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
+        
+    
+    def delete(self, tableName, condicion):
+        if baseActual != None:
+            #Verificar que la tabla exista
+            exist = False
+            with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'r') as file:
+                data = json.load(file)
+            for i in range(len(data['tables'])):
+                if data['tables'][i]['name'] == tableName:
+                    exist = True
+            if exist:
+                with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'r') as file:
+                        tableData = json.load(file)
+                tableColumName = []
+                for i in range(len(tableData['columnas'])):
+                    tableColumName.append(tableData['columnas'][i]['name'])
+                    
+                #Borrar todas las filas si no hay condicion
+                if condicion is None:
+                    delFilas = len(tableData['registros'])
+                    tableData['registros'] = []
+                    with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
+                        json.dump(tableData, file)
+                    print 'Se eliminaron '+ str(delFilas)+'filas de la tabla '+tableName+'con exito'
+                #Borra solo las filas que cumplan con la condicion
+                else:
+                    condicion = condicion.getText()
+                    #Guardar el codicional
+                    lista = condicion.split("=")
+                    columnName = lista[0]
+                    cond = lista[1]
+                    #verificar que la columna exista
+                    #pdb.set_trace()
+                    if columnName in tableColumName:
+                        pass
+                    else:
+                        print "El nombre de la columna no esta definido"
+                        sys.exit()
+                    
+                    #Borrar datos  
+                    delFilas = 0   
+                    paso = False
+                    for i in range(len(tableData['registros'])):
+                        
+                        for f in range(len(tableData['registros'][i])):
+                            
+                            if tableData['registros'][i][f].keys()[0] == columnName:
+                               # pdb.set_trace()
+                              
+                                if tableData['registros'][i][f][columnName] == cond and paso == False:
+                                    print 'eliminar'
+                                   # pdb.set_trace()
+                                    del tableData['registros'][i]
+                                    paso = True
+                                    delFilas = delFilas +1
+                                    #tableData['registros'][i][f][columnName] = expr[0].getText()
+                        with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
+                            json.dump(tableData, file)
+
+            else:
+                print "La tabla no existe en la base de datos "+baseActual
+        
+        else:
+            print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
+        
+        
+        
+        
 
 
 

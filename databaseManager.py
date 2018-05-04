@@ -190,8 +190,7 @@ class databaseManager:
                 data = json.load(file)
         for i in range(len(data['columnas'])):
             print data['columnas'][i]['name']
-         
-          
+                  
     #CREATE TABLE Orders(OrderID int, OrderNumber int, PersonID int, CONSTRAINT pk PRIMARY KEY (OrderID,PersonID), CONSTRAINT pf FOREIGN KEY (PersonID,OrderID) REFERENCES Persons(PersonID,OrderNumber), CONSTRAINT limite CHECK (OrderNumber > 12), CONSTRAINT unico UNIQUE (OrderID, PersonID))
     def insertInto(self,tableName,expr,columnName):
         if baseActual != None:
@@ -234,26 +233,16 @@ class databaseManager:
                 else:
                     print 'El numero de valores no concuerda con el numero de columnas'
                     sys.exit()              
-                pass
-                
+                                
                 #Insertar los datos
                 for i in range(len(columnName)):
                     for a in range(len(fila)):
-                        
-                        #pdb.set_trace()
                         if fila[a].keys()[0] == columnName[i].getText():
-                           
-                            #pdb.set_trace()
                             new = {fila[a].keys()[0]:expr[i]}
                             fila[a] = new 
-                           
-
-                
-               
+                     
                 tableData['registros'].append(fila)
-                print "4"
                 with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
-                  
                     json.dump(tableData, file)
             
             else:
@@ -382,8 +371,7 @@ class databaseManager:
                     
                     for i in range(len(tableData['columnas'])):
                         tableColumName.append(tableData['columnas'][i]['name'])
-                     
-                        
+      
                     #verificar que la columna exista
                     for i in range(len(columnName)):
                         if columnName[i].getText() in tableColumName:
@@ -436,16 +424,17 @@ class databaseManager:
                 tableColumName = []
                 for i in range(len(tableData['columnas'])):
                     tableColumName.append(tableData['columnas'][i]['name'])
-                    
+                
                 #Borrar todas las filas si no hay condicion
                 if condicion is None:
                     delFilas = len(tableData['registros'])
                     tableData['registros'] = []
                     with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
                         json.dump(tableData, file)
-                    print 'Se eliminaron '+ str(delFilas)+'filas de la tabla '+tableName+'con exito'
+                    print 'Se eliminaron '+ str(delFilas)+' filas de la tabla '+tableName+' con exito'
                 #Borra solo las filas que cumplan con la condicion
                 else:
+                    
                     condicion = condicion.getText()
                     #Guardar el codicional
                     lista = condicion.split("=")
@@ -461,19 +450,18 @@ class databaseManager:
                     
                     #Borrar datos  
                     delFilas = 0   
-                    paso = False
+                   # paso = False
                     for i in range(len(tableData['registros'])):
-                        
                         for f in range(len(tableData['registros'][i])):
-                            
+                          
                             if tableData['registros'][i][f].keys()[0] == columnName:
-                               # pdb.set_trace()
-                              
-                                if tableData['registros'][i][f][columnName] == cond and paso == False:
+                                #pdb.set_trace()
+                                print '3'
+                                if str(tableData['registros'][i][f][columnName]) == cond:
                                     print 'eliminar'
-                                   # pdb.set_trace()
+                                    #pdb.set_trace()
                                     del tableData['registros'][i]
-                                    paso = True
+                                    #paso = True
                                     delFilas = delFilas +1
                                     #tableData['registros'][i][f][columnName] = expr[0].getText()
                         with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:

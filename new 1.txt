@@ -1,0 +1,166 @@
+p lis
+
+    
+
+
+    def enterAlter_table_stmt(self, ctx):
+        # Opcion 1: Setear la tabla que va a ser modificada
+        # pdb.set_trace()
+        #dbManager.alterTable(ctx.table_name().getText(), ctx.alter_table_specific_stmt());
+        print "Opcion 1: setear tabla a ", ctx.table_name().getText()
+        tablaActual = ctx.table_name().getText()
+        print "deb ", ctx.table_name().getText()
+        # funciones.setCurrentDatabase( ctx.table_name().getText(), tablaActual)
+
+        # tablaActual = ctx.table_name().getText()
+        # setCurrentDatabase(ctx.table_name().getText())
+        #self.exitAlterRenameTo();
+
+    def exitAlterRenameTo(self, ctx):
+        print "Opcion 1: In rename to"
+        #print(ctx.new_table_name().getText())
+        # tableName = "holi"
+        dbManager.alterRenameTo(tablaActual, ctx.new_table_name().getText())
+        # dbManager.alterTable(sqlParser().alter_table_specific_stmt(self, ctx).new_table_name());
+        # Opcion 2 evaluar el tipo de ctx.getChild(3)
+        # dbManager.setCurrentTable(nombreTabla)
+
+    def exitAlterAddColumn(self, ctx):
+        print "Opcion 1: In add column to"
+        # dbManager.addColumn(dbManager.setCurrentTable, nuevaColumna, tipoNuevaColumna);
+        #print(ctx.column_def().getText())
+        dbManager.alterAddColumn( ctx.column_def().getText())
+
+    # Exit a parse tree produced by sqlParser#alterAddConstraint.
+    def exitAlterAddConstraint(self, ctx):
+        print "Opcion 1: In add constraint"
+        #print(ctx.table_constraint().getText())
+        dbManager.alterAddConstraint( ctx.table_constraint().getText())
+
+    # Exit a parse tree produced by sqlParser#alterDropColumn.
+    def exitAlterDropColumn(self, ctx):
+        print "Opcion 1: In drop column"
+        #print(ctx.column_name().getText())
+        dbManager.alterDropColumn(ctx.column_name().getText())
+
+    # Exit a parse tree produced by sqlParser#alterDropConstraint.
+    def exitAlterDropConstraint(self, ctx):
+        print "Opcion 1: In drop constraint"
+        #print(ctx.name().getText())
+        dbManager.alterDropConstraint( ctx.name().getText())
+
+
+
+
+        
+        
+        
+        
+        
+dbManager
+
+
+
+    # def setCurrentDatabase(self, nombreTabla):
+    #    # tablaActual = nombreTabla
+    #    pass
+    
+    def alterTable(self, tableName):
+        #funciones.setCurrentDatabase(tableName, tablaActual)
+        tablaActual = tableName
+
+        
+    
+    def alterRenameTo(self, tableName, newTableName):
+        print "tableName es "
+        print tableName
+        print "newtableName es "
+        print newTableName
+
+        # os.chdir("C:\\databases\\"+baseActual)
+        # # Se renombra el archivo json de la tabla
+        # os.rename('Tabla'+tablaActual+'.json', 'Tabla'+newTableName+'.json')
+        # with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'r') as file:
+        #     data = json.load(file)
+        # # Se renombra el objeto tabla del archivo json
+        #     n = 0
+        #     while n < (len(data['tables'])):
+        #         #print data['bases'][n]['name']
+        #         if data['tables'][n]['name'] == tablaActual:
+        #         #    del data['tables'][n]
+        #             data[newTableName] = data[tablaActual]
+        #             del data[tablaActual]
+        #         #   d[newTableName] = d.pop(tablaActual)
+        #         n = n+1
+        # with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'w') as file:
+        #     json.dump(data, file)
+        print 'Se cambio el nombre de la tabla '+tablaActual+ ' a '+ newTableName +' con exito'
+
+
+    def alterAddColumn(self, columnDef):
+        os.chdir("C:\\databases")
+        ###
+        print columnDef
+
+    def alterAddConstraint(self, tableConstraint):
+        os.chdir("C:\\databases")
+        print tableConstraint
+
+    def alterDropColumn(self, columnName):
+        os.chdir("C:\\databases")
+        print columnName
+        #
+
+    def alterDropConstraint(self, constraintName):
+        os.chdir("C:\\databases")
+        print constraintName
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        list = columnas
+                for i in list:
+                    if funciones.tipoValido(i.type_name().getText().upper()):
+                        print "es valido  "
+                    # Si es un integer
+                        if i.type_name().getText().upper() == 'INT': #and isinstance(i.type_name().getText().upper(), int):
+                            print "es un int yay "
+                            nombre['columnas'].append({'name': i.column_name().getText(), 'type': i.type_name().getText()})
+                    # Si es un float
+                        elif i.type_name().getText().upper() == 'FLOAT': #and funciones.validarFloat(i.type_name().getText().upper()):
+                            print "es un float "
+                            nombre['columnas'].append({'name': i.column_name().getText(), 'type': i.type_name().getText()})
+                    # Si es una fecha
+                        elif i.type_name().getText().upper() == 'DATE': #and funciones.validarDate(i.type_name().getText().upper()):
+                            print "es un date "
+                            nombre['columnas'].append({'name': i.column_name().getText(), 'type': i.type_name().getText()})
+                    # Si es un char(cantidad)
+                        elif i.type_name().getText().upper() == 'CHAR': #and funciones.validarChar(i.type_name().getText().upper()):
+                            print "es un char "
+                            nombre['columnas'].append({'name': i.column_name().getText(), 'type': i.type_name().getText()})
+                        
+                    else:
+                        print "Uno de los tipos de datos no es valido \nLos tipos validos son: INT, FLOAT, CHAR y DATE"
+                        sys.exit()
+                const = constraint 

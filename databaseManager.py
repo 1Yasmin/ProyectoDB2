@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import json
 import os
 import os.path
@@ -12,7 +14,6 @@ class databaseManager:
     tablaActual = ""
 
     def __init__(self):
-    
         # Verificar que exista la carpeta 'databases' que es donde se crearan las bases de datos
         os.chdir("C:\\")
         if os.path.exists("C:\\databases") == False:
@@ -301,9 +302,7 @@ class databaseManager:
         os.chdir("C:\\databases")
         #global tabName = tableName.getText()
 
-
-## Corregir numero de registros
-
+    ## Corregir numero de registros
     def alterRenameTo(self, newTableName):
         print "holiwe"
         print tablaActual
@@ -414,69 +413,82 @@ class databaseManager:
             print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
            
     def delete(self, tableName, condicion):
-        if baseActual != None:
-            #Verificar que la tabla exista
-            exist = False
-            with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'r') as file:
-                data = json.load(file)
-            for i in range(len(data['tables'])):
-                if data['tables'][i]['name'] == tableName:
-                    exist = True
-            if exist:
-                with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'r') as file:
-                        tableData = json.load(file)
-                tableColumName = []
-                for i in range(len(tableData['columnas'])):
-                    tableColumName.append(tableData['columnas'][i]['name'])
-                
-                #Borrar todas las filas si no hay condicion
-                if condicion is None:
-                    delFilas = len(tableData['registros'])
-                    tableData['registros'] = []
-                    with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
-                        json.dump(tableData, file)
-                    print 'Se eliminaron '+ str(delFilas)+' filas de la tabla '+tableName+' con exito'
-                #Borra solo las filas que cumplan con la condicion
-                else:
-                    
-                    condicion = condicion.getText()
-                    #Guardar el codicional
-                    lista = condicion.split("=")
-                    columnName = lista[0]
-                    cond = lista[1]
-                    #verificar que la columna exista
-                    #pdb.set_trace()
-                    if columnName in tableColumName:
-                        pass
-                    else:
-                        print "El nombre de la columna no esta definido"
-                        sys.exit()
-                    
-                    #Borrar datos  
-                    delFilas = 0   
-                   # paso = False
-                    for i in range(len(tableData['registros'])):
-                        for f in range(len(tableData['registros'][i])):
-                          
-                            if tableData['registros'][i][f].keys()[0] == columnName:
-                                #pdb.set_trace()
-                                print '3'
-                                if str(tableData['registros'][i][f][columnName]) == cond:
-                                    print 'eliminar'
-                                    #pdb.set_trace()
-                                    del tableData['registros'][i]
-                                    #paso = True
-                                    delFilas = delFilas +1
-                                    #tableData['registros'][i][f][columnName] = expr[0].getText()
-                        with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
-                            json.dump(tableData, file)
-
-            else:
-                print "La tabla no existe en la base de datos "+baseActual
-        
-        else:
+        if baseActual == None:
             print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
-        
+            return
+
+        # Verificar que la tabla exista
+        exist = False
+
+        with open("c:\\databases\\"+baseActual+'\metadataTabla.json', 'r') as file:
+            data = json.load(file)
+
+        for i in range(len(data['tables'])):
+            if data['tables'][i]['name'] == tableName:
+                exist = True
+
+        if not exist:
+            print "Seleccione la base de datos a utilizar \nUSE DATABASE nombre"
+            return
+
+        # Las condiciones se cumplen. Yey.
+        with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'r') as file:
+            tableData = json.load(file)
+
+        tableColumName = []
+
+        for i in range(len(tableData['columnas'])):
+            tableColumName.append(tableData['columnas'][i]['name'])
+
+        #Borrar todas las filas si no hay condicion
+        if condicion is None:
+            delFilas = len(tableData['registros'])
+            tableData['registros'] = []
+            with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
+                json.dump(tableData, file)
+
+            print 'Se eliminaron '+ str(delFilas)+' filas de la tabla '+tableName+' con exito'
+
+        # Borra solo las filas que cumplan con la condicion
+        else:
+            condicion = condicion.getText()
+            # Guardar el codicional
+
+            # TODO: Temporalmente solo soportamos la condicion simple de igualdad
+            lista = condicion.split("=")
+            columnName = lista[0]
+            cond = lista[1]
+
+            # Verificar que la columna exista
+            #pdb.set_trace()
+            if not columnName in tableColumName:
+                print "El nombre de la columna no esta definido"
+                sys.exit()
+
+            # Borrar datos
+            delFilas = 0
+            # paso = False
+
+            for i in range(len(tableData['registros'])):
+                for f in range(len(tableData['registros'][i])):
+                    if tableData['registros'][i][f].keys()[0] == columnName:
+                        #pdb.set_trace()
+                        print '3'
+
+                        if str(tableData['registros'][i][f][columnName]) == cond:
+                            print 'eliminar'
+                            #pdb.set_trace()
+
+                            del tableData['registros'][i]
+                            #paso = True
+
+                            delFilas = delFilas +1
+
+                            #tableData['registros'][i][f][columnName] = expr[0].getText()
+
+                # TODO: Hacer hacer la eliminación
+                # with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
+                    # json.dump(tableData, file)
 
     # def selectCore(self, resultColumn, expr, tableOrSubquery,joinClause):
     #     os.chdir("C:\\databases\\")
@@ -486,5 +498,3 @@ class databaseManager:
     #     print "Las colunmas en "+tableName+" son: "
     #     for i in range(len(data['columns'])):
     #         print data['columns'][i]['name']
-
-

@@ -68,7 +68,6 @@ def queTipo(tipo, valor):
         return valor
 
     elif tipo.upper() == "INT" and isinstance(valor, int) == False:
-        
         #print int(valor)
         return valor
     elif tipo.upper() == "FLOAT" and isinstance(valor, float) == False:

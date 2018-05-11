@@ -467,24 +467,42 @@ class databaseManager:
 
             # Borrar datos
             delFilas = 0
+            #posicionesAEliminar = []
             # paso = False
 
-            for i in range(len(tableData['registros'])):
+            # Iterar sobre las filas
+            # print "Len: ", len(tableData['registros'])
+            #   print "Pos 3: ", tableData['registros'][3]
+
+            for i in xrange(len(tableData['registros']-1,-1,-1)): # PROBAR ESTO
+                print "Actualmenbte la longitud de table data es: ", len(tableData['registros'])
+
+                # Iterando las columnas
                 for f in range(len(tableData['registros'][i])):
                     if tableData['registros'][i][f].keys()[0] == columnName:
-                        #pdb.set_trace()
-                        print '3'
 
+                        #pdb.set_trace()
                         if str(tableData['registros'][i][f][columnName]) == cond:
                             print 'eliminar'
                             #pdb.set_trace()
 
-                            del tableData['registros'][i]
+                            # En lugar de eliminar eliminar, vamos a construir un array
+                            # de las posiciones que deben ser eliminadas, de forma que luego
+                            # hagamos la eliminacion atómicamente
+                            # del tableData['registros'][i]
+                            #posicionesAEliminar.append(i)
                             #paso = True
 
                             delFilas = delFilas +1
 
                             #tableData['registros'][i][f][columnName] = expr[0].getText()
+
+            # Para evitar el problema de que eliminar una tupla 'corra' las demàs tuplas y por tanto
+            # los offsets identificados para eliminación se vuelvan incorrectos, vamos a eliminar
+            # las tuplas en sentido contrario, de forma que primer se elimine 3 y luego 1. Esto porque
+            # eliminar la posición 3 no modifica la posición de 1.
+            
+
 
                 # TODO: Hacer hacer la eliminación
                 # with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:

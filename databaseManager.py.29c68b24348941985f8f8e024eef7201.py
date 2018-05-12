@@ -304,7 +304,8 @@ class databaseManager:
         #global tabName = tableName.getText()
 
     ## Corregir numero de registros
-    def alterRenameTo(self, newTableName): 
+    def alterRenameTo(self, newTableName):
+        print 
         print newTableName
         print tablaActual
 
@@ -339,7 +340,7 @@ class databaseManager:
 
     def alterAddColumn(self, columnDef):
         os.chdir("C:\\databases")
-         #nombre['columnas'].append({'name': i.column_name().getText(), 'type': i.type_name().getText()})
+         nombre['columnas'].append({'name': i.column_name().getText(), 'type': i.type_name().getText()})
         print columnDef
 
     def alterAddConstraint(self, tableConstraint):

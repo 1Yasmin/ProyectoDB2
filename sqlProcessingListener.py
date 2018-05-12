@@ -7,7 +7,7 @@ dbManager = databaseManager()
 
 
 class sqlProcessingListener(sqlListener):
-    #tablaActual = ""
+    tablaActual = None
     def __init__(self):
         #self.db = db
         pass
@@ -44,8 +44,8 @@ class sqlProcessingListener(sqlListener):
         # pdb.set_trace()
         #dbManager.alterTable(ctx.table_name().getText(), ctx.alter_table_specific_stmt());
         print "Opcion 1: setear tabla a ", ctx.table_name().getText()
-        #tablaActual = ctx.table_name().getText()
-        dbManager.setCurrentDatabase(ctx.table_name().getText())
+        tablaActual = ctx.table_name().getText()
+        dbManager.setCurrentTable(ctx.table_name().getText())
         #self.exitAlterRenameTo();
 
     def exitAlterRenameTo(self, ctx):

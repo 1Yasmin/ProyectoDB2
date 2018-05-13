@@ -97,5 +97,68 @@ def validarFecha(valor):
     else:
         return False
 
-
+          
+def identificarCondicion(expr):
+    if '>' in expr and '>=' not in expr and '<>' not in expr:
+        signo = '>'
+        lista = expr.split(signo)
+        columnName = lista[0]
+        cond = lista[1]
+        return [columnName, signo, cond]
+    elif '>=' in expr:
+        signo = '>='
+        lista = expr.split(signo)
+        columnName = lista[0]
+        cond = lista[1]
+        return [columnName, signo, cond]
+    elif '<' in expr and '<=' not in expr and '<>' not in expr:
+        signo = '<'
+        lista = expr.split(signo)
+        columnName = lista[0]
+        cond = lista[1]
+        return [columnName, signo, cond]
+    elif '<=' in expr:
+        signo = '<='
+        lista = expr.split(signo)
+        columnName = lista[0]
+        cond = lista[1]
+        return [columnName, signo, cond]
+    elif '<>' in expr:
+        signo = '<>'
+        lista = expr.split(signo)
+        columnName = lista[0]
+        cond = lista[1]
+        return [columnName, signo, cond]
+    elif '=' in expr and '>' not in expr and '<' not in expr:
+        signo = '='
+        lista = expr.split(signo)
+        columnName = lista[0]
+        cond = lista[1]
+        return [columnName, signo, cond]
+    else:
+        return False
         
+def condiciones(expr):
+    cond =[]
+    if 'AND' in expr:
+        #pdb.set_trace()
+        lista = expr.split('AND')
+        for i in range(len(lista)):
+            if 'OR' in expr:
+                ex = lista[i].split('OR')
+                for x in range(len(ex)):
+                    a = identificarCondicion(ex[x])
+                    if i%2 == False:
+                        a.insert(3, 'OR')
+                    cond.append(a)
+            else:
+                a = identificarCondicion(lista[i])
+                if i%2 == False:
+                    a.insert(3, 'AND')
+                cond.append(a)
+        return cond
+    else:
+        cond.append(identificarCondicion(expr))
+        return cond
+ 
+

@@ -111,12 +111,13 @@ class databaseManager:
                             })
                             a = a+1
                         if funciones.tipoConstraint(const[a]) == 'CHECK':
-                            nombre['constraints'].append(
-                            {'type': 'CHECK', 
-                            'name': funciones.validarValor(const[a].name()),
-                            'column_name': funciones.columnName(const[a]),
-                            'expr': funciones.validarValor(const[a].expr())
-                            })
+                            if funciones.validarValor(const[a].expr()) != None:
+                                nombre['constraints'].append(
+                                {'type': 'CHECK', 
+                                'name': funciones.validarValor(const[a].name()),
+                                'column_name': funciones.columnName(const[a]),
+                                'expr': funciones.condiciones(const[a].expr().getText())
+                                })
                             a = a+1
                         if funciones.tipoConstraint(const[a]) == 'UNIQUE':
                             nombre['constraints'].append(
@@ -508,11 +509,11 @@ class databaseManager:
                 # with open("C:\\databases\\"+baseActual+'\Tabla'+tableName+'.json', 'w') as file:
                     # json.dump(tableData, file)
 
-    # def selectCore(self, resultColumn, expr, tableOrSubquery,joinClause):
-    #     os.chdir("C:\\databases\\")
-    #     with open("C:\\databases\\"+baseActual+"\\Tabla"+tableName+".json", 'r') as file:
-    #             data=json.load(file)
-    #
-    #     print "Las colunmas en "+tableName+" son: "
-    #     for i in range(len(data['columns'])):
-    #         print data['columns'][i]['name']
+    def selectCore(self, resultColumn, expr, tableOrSubquery,joinClause):
+        os.chdir("C:\\databases\\")
+        with open("C:\\databases\\"+baseActual+"\\Tabla"+tableName+".json", 'r') as file:
+                data=json.load(file)
+    
+        #print "Las colunmas en "+tableName+" son: "
+       # for i in range(len(data['columns'])):
+            #print data['columns'][i]['name']

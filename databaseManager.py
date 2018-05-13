@@ -306,31 +306,32 @@ class databaseManager:
 
     ## Corregir numero de registros
     def alterRenameTo(self, newTableName): 
-        print newTableName
-        print tablaActual
+        
 
+        tableName = tablaActual
         os.chdir("C:\\databases\\"+baseActual)
-        if funciones.validarExistenciaTable(baseActual, tablaActual):
+        if funciones.validarExistenciaTable(baseActual, tableName):
 
-            print "Desea cambiar el nombre de la tabla " + tablaActual + " a " 
+            print "Desea cambiar el nombre de la tabla " + tableName + " a " + newTableName
             deseaBorrar = raw_input("(si/no)\n")
-            if deseaBorrar == "si":
-                # Se cambia el archivo json de la tabla
-                os.rename('Tabla'+tablaActual+'.json', 'Tabla'+newTableName+'.json')
+            if deseaBorrar == "si":  
+                print "cp"
                 with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'r') as file:
                     data = json.load(file)
                 # Se cambia el objeto tabla del archivo json
-                    n = 0
-                    while n < (len(data['tables'])):
-                        #print data['bases'][n]['name']
-                        if data['tables'][n]['name'] == tablaActual:
-                       #    del data['tables'][n]
-                            data[newTableName] = data[tablaActual]
-                            del data[tablaActual]
-                        n = n+1
+                    print "aqui "
+                    for i in range(len(data['tables'])):
+                        if data['tables'][i]['name'] == tableName:
+                            print data['tables'][i]['name']
+                            del data['tables']
+                        #     data[newTableName] = data[tableName]
+                        #     del data[tableName]
+                # Se cambia el archivo json de la tabla
+                os.rename('Tabla'+tableName+'.json', 'Tabla'+newTableName+'.json')
+                        
                 with open("C:\\databases\\"+baseActual+"\\metadataTabla.json", 'w') as file:
                     json.dump(data, file)
-                print 'Se cambio el nombre de la tabla '+tablaActual+ 'a'+ newTableName +' con exito'
+                print 'Se cambio el nombre de la tabla ' + tableName + ' a ' + newTableName + ' con exito'
             elif deseaBorrar == "NO":
                 print "No se cambio el nombre de la base de datos"
             else:
